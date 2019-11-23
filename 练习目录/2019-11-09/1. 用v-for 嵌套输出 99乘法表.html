@@ -8,6 +8,19 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-    
+    <div id="root">
+            <div v-for="i in num">
+                <span v-for="j in i">{{j}}*{{i}}={{j*i}}  </span> 
+            </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#root",
+            data:{
+                num: 9,
+            }
+            
+        })
+    </script>
 </body>
 </html>
