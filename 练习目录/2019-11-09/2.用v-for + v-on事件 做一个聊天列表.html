@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2.用v-for + v-on事件 做一个聊天列表</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        
+        #root{
+            margin: 0 auto;
+            width: 400px;
+            height: 412px;
+            position: relative;
+        }
+        .list{
+            width:398px;
+            height: 300px;
+            border:1px solid rgb(169, 169, 169);
+            background: rgb(231, 163, 132);
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+            margin: 5px;
+            
+        }
+        li{
+            height: 25px;
+        }
+        .input{
+            width: 398px;
+            height: 80px;
+            padding: 0;
+        }
+        .sub{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="list" >
+            <ul>
+                <li v-for="item in list" v-bind:style="{textAlign:item.name === '李雷'?'right':'left'}">
+                    <div>
+                        <span>{{item.name}}:</span>
+                        <span>{{item.content}}</span>
+                        <span>{{item.time}}</span>
+                    </div>
+                    
+                </li>
+            </ul>
+        </div>
+    
+        <textarea class="input" v-model="data"></textarea>
+        <button class="sub" v-on:click="send">发送</button>
+    </div>    
+    <script>
+        var vm = new Vue({
+            el:"#root",
+            data:{
+                list:[
+                    {
+                        name:"李雷",
+                        content:"输入的内容",
+                        time:new Date().toLocaleTimeString(),
+                    }
+                ],
+                data:"",        
+            },
+            methods:{
+                send(){
+                    setTimeout(() => {
+                        this.list.push({
+                            name:"韩梅梅",
+                            content:"你好！",
+                            time:new Date().toLocaleTimeString(),
+                        })
+                    }, 500);
+                    this.list.push({
+                        name:"李雷",
+                        content:this.data,
+                        time:new Date().toLocaleTimeString(),
+                    })
+                    this.data=""
+                }
+            }
+        })
+    </script>
+</body>
+</html>
