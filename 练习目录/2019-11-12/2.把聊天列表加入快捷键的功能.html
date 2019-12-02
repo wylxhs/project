@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2.把聊天列表加入快捷键的功能</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        
+            #root{
+                margin: 0 auto;
+                width: 400px;
+                height: 420px;
+                position: relative;
+            }
+            .list{
+                width:398px;
+                height: 300px;
+                border:1px solid rgb(169, 169, 169);
+                
+            }
+            ul{
+                list-style: none;
+                padding: 0;
+                margin: 5px;
+                
+            }
+            li{
+                height: 25px;
+            }
+            .input{
+                width: 398px;
+                height: 80px;
+                padding: 0;
+            }
+            .bot{
+                float: right;
+                width: 177px;
+                height: 30px;
+                
+            }
+            
+            .sub{
+                background: rgb(235, 113, 57);
+                border:none;
+                cursor: pointer;
+                line-height: 20px;
+                border-radius: 5px 0 0 5px;
+                padding: 4px 10px;
+                color: #fff;
+                outline:none;
+                border: 1px solid rgb(241, 239, 239);
+                border-right: 0;
+                position: absolute;
+                bottom: 0;
+                right: 124px
+                
+            }
+            .sub:hover,
+            .sub:active,
+            .sel:hover,
+            .sel:active{
+                background: rgb(235, 153, 99);
+            }
+            
+            .sel{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 18px;
+                line-height: 20px;
+                padding: 4px;
+                border: 1px solid rgb(241, 239, 239);
+                color: #fff;
+                border-radius: 0 5px 5px 0;
+                background:  rgb(235, 113, 57);
+                cursor: pointer;
+            }
+            .fs{
+                position: absolute;
+                bottom: 0px;
+                right: 0px;
+                display: inline-block;
+                border-radius: 0 5px 5px 0;
+                border: 1px solid rgb(241, 239, 239);
+                height: 28px;
+                
+            }
+            select{
+                border: none;
+                outline: none;
+                color:#fff;
+                background: rgb(235, 113, 57);
+                line-height: 20px;
+                height: 28px;
+                padding: 4px;                
+                font-size: 14px;                
+            }
+            option:hover,
+            option:active{
+                background:rgb(235, 153, 99)
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <div class="list" >
+                <ul>
+                    <li v-for="item in list" 
+                        v-bind:style="{textAlign:item.name === '李雷'?'right':'left'}">
+                        <div>
+                            <span>{{item.name}}:</span>
+                            <span>{{item.content}}</span>
+                            <span>{{item.time}}</span>
+                        </div>                        
+                    </li>
+                </ul>
+            </div>
+        
+            <textarea 
+                class="input" 
+                v-model="data"            
+                v-on:keydown.enter.prevent="enter($event)"
+                @keydown.enter.ctrl="enterCtrl"
+            ></textarea>
+            <div class="bot">                
+                <div class="sub" v-on:click="send" >发送</div>
+            </div>
+            <div class="fs">
+                <select v-model="sendMode">
+                    <option v-for="item in sendType" :value="item">{{item}}发送</option>
+                </select>
+            </div>
+        </div>    
+        <script>
+            var vm = new Vue({
+                el:"#root",
+                data:{
+                    list:[
+                        {
+                            name:"李雷",
+                            content:"输入的内容",
+                            time:new Date().toLocaleTimeString(),
+                        }
+                    ],
+                    sendType:["Enter","Enter+Ctrl"],
+                    sendMode:"Enter",
+                    data:"",        
+                },
+                methods:{
+                    send(){
+                        setTimeout(() => {
+                            this.list.push({
+                                name:"韩梅梅",
+                                content:"你好！",
+                                time:new Date().toLocaleTimeString(),
+                            })
+                        }, 500);
+                        this.list.push({
+                            name:"李雷",
+                            content:this.data,
+                            time:new Date().toLocaleTimeString(),
+                        })
+                        this.data=""
+                    },
+                    enter(){
+                        if(this.sendMode !== "Enter" || event.ctrlkey) return;
+                        this.send();
+                    },
+                    enterCtrl(){
+                        if(this.sendMode !== "Enter+Ctrl") return;
+                        this.send();
+                    }
+                    // entertext(event){
+                    //     if(event.keyCode=='13'&&event.ctrlKey){
+                    //         this.data+='\n'
+                    //     }else if(event.keyCode=='13'){
+                    //         this.send();
+                    //         event.preventDefault();
+                    //     }
+                        
+                    // },
+                },
+            })
+        </script>
+    
+</body>
+</html>
